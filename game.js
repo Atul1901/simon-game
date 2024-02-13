@@ -1,6 +1,8 @@
 // alert("yes its running");
 var UserClickedPattern = [];
 
+var iCnt = 0;
+
 var gamePattern = [];
 var buttonColor = ["red", "blue", "green", "yellow"];
 
@@ -66,14 +68,16 @@ $(".btn").on("click", function () {
   // console.log(userChosenColour);
   playSound(userChosenColour);
   animatePress(userChosenColour);
-  checkAnswer(userChosenColour);
+  // checkAnswer(userChosenColour);
   UserClickedPattern.push(userChosenColour);
-  console.log("user clicked pattern", UserClickedPattern);
+  checkAnswer(userChosenColour);
+  // console.log("user clicked pattern", UserClickedPattern);
 });
 
 $(document).ready(() => {
   $(document).keypress(function (event) {
     if (isFirstTIme) {
+      console.log("game started");
       nextSequence();
     }
 
@@ -136,15 +140,37 @@ function animatePress(currentColor) {
 
 //check answer
 
+const compareArrays = (a, b) => {
+  return JSON.stringify(a) === JSON.stringify(b);
+};
+
 function checkAnswer(currentColor) {
-  if (userChosenColour == randomChoosenColor) {
-    console.log("sucess");
+  console.log("current color >> ", currentColor);
+  if (gamePattern[iCnt] === currentColor) {
+    iCnt++;
+  } else {
+    $("h1").text("game over");
+    // alert("har gaya!!");
+    // iCnt = 0;
+  }
+
+  if (iCnt === gamePattern.length) {
+    console.log("game won,,,,,");
+    iCnt = 0;
+
     setTimeout(() => {
       nextSequence();
     }, 1000);
-  } else {
-    console.log("wrong");
   }
+
+  // if (userChosenColour == randomChoosenColor) {
+  //   console.log("sucess");
+  //   setTimeout(() => {
+  //     nextSequence();
+  //   }, 1000);
+  // } else {
+  //   console.log("wrong");
+  // }
 }
 
 //making the game pattern
